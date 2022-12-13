@@ -56,6 +56,28 @@ def get_dirichlet_inverse [field R] (f : arithmetic_function R) (h : f 1 ≠ 0) 
 lemma get_dirichlet_inverse_spec [field R] (f : arithmetic_function R) (h : f 1 ≠ 0) :
   is_dirichlet_inverse R f (get_dirichlet_inverse R f h) :=
 begin
+  ext, -- TODO: Change to ext n
+  have : x = 0 ∨ x = 1 ∨ 1 < x := sorry,
+  cases this,
+  { rw this,
+    refl },
+  cases this,
+  { rw this,
+    change (f • get_dirichlet_inverse R f h) 1 = 1,
+    sorry },
+  have h₁ : (1 : arithmetic_function R) x = 0 := sorry,
+  rw h₁,
+  set g := get_dirichlet_inverse R f h with hg,
+  change ∑ y in divisors_antidiagonal x, f y.fst • g y.snd = 0,
+  have h₂ : ∑ y in divisors_antidiagonal x, f y.fst • g y.snd =
+    (g x)*(f 1) + ∑ y : (divisors_antidiagonal x).erase ⟨1, x⟩, (f y.val.1) * (g y.val.2) := sorry,
+  have h₃ : g x = -1 / (f 1) * ∑ y : (divisors_antidiagonal x).erase ⟨1, x⟩, (f y.val.1) * (g y.val.2) := begin
+    rw hg,
+    --unfold get_dirichlet_inverse,
+    change gen_dirichlet_inverse_fn R f h x = -1 / (f 1) * ∑ y : (divisors_antidiagonal x).erase ⟨1, x⟩, (f y.val.1) * (g y.val.2),
+    -- TODO: Get recursive function to unfold
+    sorry
+  end,
   sorry
 end
 
