@@ -51,7 +51,7 @@ def gen_dirichlet_inverse_fn [field R] (f : arithmetic_function R) (h : f 1 ≠ 
     (f x.val.1) * (gen_dirichlet_inverse_fn x.val.2))
 
 def get_dirichlet_inverse [field R] (f : arithmetic_function R) (h : f 1 ≠ 0) :
-  arithmetic_function R := ⟨gen_dirichlet_inverse_fn R f h, sorry⟩
+  arithmetic_function R := ⟨gen_dirichlet_inverse_fn R f h, by unfold gen_dirichlet_inverse_fn⟩
 
 lemma get_dirichlet_inverse_spec [field R] (f : arithmetic_function R) (h : f 1 ≠ 0) :
   is_dirichlet_inverse R f (get_dirichlet_inverse R f h) :=
