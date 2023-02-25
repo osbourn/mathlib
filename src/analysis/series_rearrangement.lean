@@ -34,6 +34,15 @@ noncomputable def pos_least_exceeding (M : ℝ) : ℕ := nat.find (pos_exceeds_v
 
 noncomputable def neg_least_exceeding (M : ℝ) : ℕ := nat.find (neg_exceeds_value hc hca M)
 
+noncomputable def gen_bounds (M : ℝ) : ℕ → (ℕ × ℕ)
+| 0 := let p₁ : ℕ := pos_least_exceeding hc hca M in
+            let q₂ : ℕ := neg_least_exceeding hc hca (M - (finset.range p₁).sum (pos_terms a)) in
+            (p₁, q₂)
+| (step + 1) := let (p_prev, q_prev) := gen_bounds step in
+                let pₙ := pos_least_exceeding hc hca (M - (finset.range p_prev).sum (pos_terms a) - (finset.range q_prev).sum (neg_terms a)) in
+                let qₙ := neg_least_exceeding hc hca (M - (finset.range pₙ).sum (pos_terms a) - (finset.range q_prev).sum (neg_terms a)) in
+                (pₙ, qₙ)
+
 theorem riemann_rearrangement_theorem {series : ℕ → ℝ} (h₁ : converges series)
   (h₂ : ¬converges_absolutely series) (C : ℝ) : ∃ (p : ℕ → ℕ), function.bijective p ∧
     filter.tendsto (λ k, (finset.range k).sum (λ n, series (p n))) filter.at_top (nhds C) := sorry
